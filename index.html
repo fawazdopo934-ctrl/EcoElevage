@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animal Care - Gestion des Animaux</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Swiper CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/paw.png" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-paw"></i>Animals Paradise
+      </a>
+
+      <nav class="navbar">
+        <a href="index.html" class="active">Accueil</a>
+        <a href="vente.html">Vente</a>
+        <a href="soins.html">Soins</a>
+        <a href="pharmacie.html">Pharmacie</a>
+        <a href="elevage.html">Élevage</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="icons">
+        <div class="fas fa-bars" id="menu-btn"></div>
+        <div class="fas fa-search" id="search-btn"></div>
+        <div class="fas fa-shopping-cart" id="cart-btn">
+          <span class="cart-count">0</span>
+        </div>
+        <div class="fas fa-user" id="login-btn"></div>
+      </div>
+
+      <!-- Search Form -->
+      <form action="" class="search-form">
+        <input
+          type="search"
+          id="search-box"
+          placeholder="Rechercher animaux, produits..."
+        />
+        <label for="search-box" class="fas fa-search"></label>
+      </form>
+
+      <!-- Shopping Cart -->
+      <div class="shopping-cart">
+        <div class="cart-items">
+          <!-- Les items seront ajoutés dynamiquement -->
+        </div>
+        <div class="total">Total : <span>0</span> CFA</div>
+        <a href="#" class="btn">Commander</a>
+      </div>
+
+      <!-- Login Form -->
+      <form action="" class="login-form">
+        <h3>Connexion</h3>
+        <input type="email" placeholder="Votre email" class="box" required />
+        <input
+          type="password"
+          placeholder="Votre mot de passe"
+          class="box"
+          required
+        />
+        <div class="remember">
+          <input type="checkbox" id="remember" />
+          <label for="remember">Se souvenir de moi</label>
+        </div>
+        <input type="submit" value="Se connecter" class="btn" />
+        <p>Mot de passe oublié ? <a href="#">Cliquez ici</a></p>
+        <p>
+          Pas de compte ? <a href="#" id="register-link">Créer un compte</a>
+        </p>
+      </form>
+    </header>
+
+    <!-- Home Section -->
+    <section class="home" id="home">
+      <div class="content">
+        <h1>Bienvenue chez <span>Animals Paradise</span></h1>
+        <p>
+          Votre partenaire de confiance pour l'adoption, les soins et l'élevage
+          d'animaux. Qualité et bien-animal garantis.
+        </p>
+        <div class="buttons">
+          <a href="vente.html" class="btn">Voir nos animaux</a>
+          <a href="contact.html" class="btn btn-outline">Prendre RDV</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+      <h2 class="heading">Nos <span>Services</span></h2>
+      <p class="description">
+        Découvrez tous nos services pour le bien-être de vos animaux
+      </p>
+
+      <div class="box-container">
+        <div class="box">
+          <i class="fas fa-dog"></i>
+          <h3>Vente d'Animaux</h3>
+          <p>
+            Animaux sains et vaccinés. Chiens, chats, volailles, bovins et plus
+            encore.
+          </p>
+          <a href="vente.html" class="btn">Découvrir</a>
+        </div>
+
+        <div class="box">
+          <i class="fas fa-hand-holding-medical"></i>
+          <h3>Soins & Toilettage</h3>
+          <p>
+            Services professionnels de toilettage, vaccination et suivi
+            vétérinaire.
+          </p>
+          <a href="soins.html" class="btn">Prendre RDV</a>
+        </div>
+
+        <div class="box">
+          <i class="fas fa-pills"></i>
+          <h3>Pharmacie Vétérinaire</h3>
+          <p>
+            Médicaments, vaccins et produits de soin pour tous types d'animaux.
+          </p>
+          <a href="pharmacie.html" class="btn">Acheter</a>
+        </div>
+
+        <div class="box">
+          <i class="fas fa-seedling"></i>
+          <h3>Élevage Professionnel</h3>
+          <p>
+            Conseils et services d'élevage pour animaux de ferme et de
+            compagnie.
+          </p>
+          <a href="elevage.html" class="btn">En savoir plus</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Animals Preview -->
+    <section class="animals-preview" id="animals">
+      <h2 class="heading">Animaux <span>Disponibles</span></h2>
+
+      <div class="swiper animal-slider">
+        <div class="swiper-wrapper">
+          <!-- Les slides seront ajoutés dynamiquement -->
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+
+      <div class="text-center" style="margin-top: 4rem">
+        <a href="vente.html" class="btn">Voir tous les animaux</a>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+      <h2 class="heading">Témoignages <span>Clients</span></h2>
+
+      <div class="swiper review-slider">
+        <div class="swiper-wrapper">
+          <!-- Les témoignages seront ajoutés dynamiquement -->
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+      <h2>Besoin d'aide pour votre animal ?</h2>
+      <p>
+        Notre équipe de vétérinaires et spécialistes est disponible 24/7 pour
+        répondre à toutes vos questions.
+      </p>
+      <div class="buttons">
+        <a href="contact.html" class="btn">Contactez-nous</a>
+        <a href="tel:+2250123456789" class="btn btn-outline"
+          >Appeler maintenant</a
+        >
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="box-container">
+        <div class="box">
+          <h3>AnimalCare</h3>
+          <p>
+            Votre partenaire de confiance pour l'adoption, les soins et
+            l'élevage d'animaux depuis 2010.
+          </p>
+          <div class="social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>Liens Rapides</h3>
+          <a href="index.html"><i class="fas fa-chevron-right"></i> Accueil</a>
+          <a href="vente.html"><i class="fas fa-chevron-right"></i> Vente</a>
+          <a href="soins.html"><i class="fas fa-chevron-right"></i> Soins</a>
+          <a href="pharmacie.html"
+            ><i class="fas fa-chevron-right"></i> Pharmacie</a
+          >
+          <a href="elevage.html"
+            ><i class="fas fa-chevron-right"></i> Élevage</a
+          >
+        </div>
+
+        <div class="box">
+          <h3>Contact</h3>
+          <a href="tel:+2250123456789"
+            ><i class="fas fa-phone"></i> +225 01 23 45 67 89</a
+          >
+          <a href="mailto:contact@animalcare.ci"
+            ><i class="fas fa-envelope"></i> contact@animalcare.ci</a
+          >
+          <a href="#"
+            ><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d'Ivoire</a
+          >
+        </div>
+
+        <div class="box">
+          <h3>Horaires</h3>
+          <p><i class="fas fa-clock"></i> Lundi - Vendredi: 8h-18h</p>
+          <p><i class="fas fa-clock"></i> Samedi: 9h-17h</p>
+          <p><i class="fas fa-clock"></i> Dimanche: 10h-15h</p>
+          <p><i class="fas fa-clock"></i> Urgences: 24h/24</p>
+        </div>
+      </div>
+
+      <div class="credit">
+        © <span id="current-year"></span> AnimalCare. Tous droits réservés.
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

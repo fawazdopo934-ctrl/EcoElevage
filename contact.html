@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact - Animal Care</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Leaflet CSS (pour la carte) -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <style>
+      /* Styles spécifiques à la page contact */
+      .contact-header {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("images/contact-bg.jpg") center/cover;
+        padding: 15rem 9% 8rem;
+        color: var(--white);
+        text-align: center;
+      }
+
+      .contact-header h1 {
+        font-size: 4.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .contact-header p {
+        font-size: 1.8rem;
+        max-width: 70rem;
+        margin: 0 auto;
+        opacity: 0.9;
+      }
+
+      /* Section contact principale */
+      .main-contact {
+        padding: 8rem 9%;
+        background: var(--white);
+      }
+
+      .contact-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(35rem, 1fr));
+        gap: 5rem;
+      }
+
+      /* Informations de contact */
+      .contact-info {
+        background: var(--light);
+        border-radius: var(--radius);
+        padding: 4rem;
+        box-shadow: var(--shadow);
+      }
+
+      .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .info-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .info-icon {
+        flex-shrink: 0;
+        width: 6rem;
+        height: 6rem;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: var(--white);
+      }
+
+      .info-content h3 {
+        font-size: 2rem;
+        color: var(--dark);
+        margin-bottom: 0.5rem;
+      }
+
+      .info-content p {
+        font-size: 1.6rem;
+        color: var(--gray);
+        line-height: 1.6;
+      }
+
+      .info-content a {
+        color: var(--primary);
+        font-size: 1.6rem;
+        display: block;
+        margin-top: 0.5rem;
+        transition: var(--transition);
+      }
+
+      .info-content a:hover {
+        color: var(--primary-dark);
+      }
+
+      /* Horaires */
+      .hours-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 1rem;
+      }
+
+      .hours-list li {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.6rem;
+        color: var(--dark);
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px dashed #dee2e6;
+      }
+
+      .hours-list li:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .hours-list .day {
+        font-weight: 500;
+      }
+
+      .hours-list .time {
+        color: var(--primary);
+      }
+
+      /* Formulaire de contact */
+      .contact-form {
+        background: var(--light);
+        border-radius: var(--radius);
+        padding: 4rem;
+        box-shadow: var(--shadow);
+      }
+
+      .contact-form h3 {
+        font-size: 2.4rem;
+        color: var(--dark);
+        margin-bottom: 3rem;
+        text-align: center;
+      }
+
+      .form-group {
+        margin-bottom: 2rem;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 1.6rem;
+        color: var(--dark);
+        margin-bottom: 0.8rem;
+        font-weight: 500;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 1.2rem;
+        border: var(--border);
+        border-radius: 8px;
+        font-size: 1.6rem;
+        color: var(--dark);
+        background: var(--white);
+      }
+
+      .form-group textarea {
+        height: 15rem;
+        resize: vertical;
+      }
+
+      /* Carte */
+      .map-section {
+        padding: 8rem 9%;
+        background: var(--light);
+      }
+
+      #map {
+        height: 50rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      /* FAQ Contact */
+      .faq-contact {
+        padding: 8rem 9%;
+        background: var(--white);
+      }
+
+      .faq-item {
+        margin-bottom: 2rem;
+        border: var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .faq-question {
+        padding: 2rem;
+        background: var(--light);
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .faq-question h4 {
+        font-size: 1.8rem;
+        color: var(--dark);
+        margin: 0;
+      }
+
+      .faq-answer {
+        padding: 0 2rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .faq-answer.active {
+        padding: 2rem;
+        max-height: 50rem;
+      }
+
+      .faq-answer p {
+        font-size: 1.6rem;
+        color: var(--gray);
+        line-height: 1.8;
+      }
+
+      /* Urgences */
+      .emergency-section {
+        padding: 8rem 9%;
+        background: linear-gradient(
+            rgba(46, 125, 50, 0.9),
+            rgba(46, 125, 50, 0.9)
+          ),
+          url("images/emergency-bg.jpg") center/cover;
+        color: var(--white);
+        text-align: center;
+      }
+
+      .emergency-box {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius);
+        padding: 4rem;
+        backdrop-filter: blur(10px);
+        max-width: 60rem;
+        margin: 0 auto;
+      }
+
+      .emergency-icon {
+        font-size: 5rem;
+        margin-bottom: 2rem;
+        color: #ffeb3b;
+      }
+
+      .emergency-box h3 {
+        font-size: 2.8rem;
+        margin-bottom: 2rem;
+      }
+
+      .emergency-box p {
+        font-size: 1.8rem;
+        margin-bottom: 3rem;
+        opacity: 0.9;
+      }
+
+      .emergency-phone {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #ffeb3b;
+        margin: 2rem 0;
+        display: block;
+      }
+
+      /* Réseaux sociaux */
+      .social-section {
+        padding: 8rem 9%;
+        background: var(--light);
+        text-align: center;
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-top: 3rem;
+      }
+
+      .social-link {
+        width: 6rem;
+        height: 6rem;
+        border-radius: 50%;
+        background: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: var(--primary);
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+      }
+
+      .social-link:hover {
+        transform: translateY(-5px);
+        background: var(--primary);
+        color: var(--white);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .contact-container {
+          grid-template-columns: 1fr;
+        }
+
+        #map {
+          height: 30rem;
+        }
+
+        .emergency-phone {
+          font-size: 2.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header (identique) -->
+    <header class="header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-paw"></i>AnimalCare
+      </a>
+
+      <nav class="navbar">
+        <a href="index.html">Accueil</a>
+        <a href="vente.html">Vente</a>
+        <a href="soins.html">Soins</a>
+        <a href="pharmacie.html">Pharmacie</a>
+        <a href="elevage.html">Élevage</a>
+        <a href="contact.html" class="active">Contact</a>
+      </nav>
+
+      <div class="icons">
+        <div class="fas fa-bars" id="menu-btn"></div>
+        <div class="fas fa-search" id="search-btn"></div>
+        <div class="fas fa-shopping-cart" id="cart-btn">
+          <span class="cart-count">0</span>
+        </div>
+        <div class="fas fa-user" id="login-btn"></div>
+      </div>
+
+      <!-- Formulaires (identique) -->
+    </header>
+
+    <!-- Header Contact -->
+    <section class="contact-header">
+      <h1>Contactez-<span style="color: var(--accent)">nous</span></h1>
+      <p>
+        Notre équipe est à votre disposition pour répondre à toutes vos
+        questions sur vos animaux.
+      </p>
+    </section>
+
+    <!-- Section contact principale -->
+    <section class="main-contact">
+      <div class="contact-container">
+        <!-- Informations de contact -->
+        <div class="contact-info">
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="info-content">
+              <h3>Notre adresse</h3>
+              <p>Rue du Commerce, Plateau<br />Abidjan, Côte d'Ivoire</p>
+              <a href="#map"
+                >Voir sur la carte <i class="fas fa-arrow-right"></i
+              ></a>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="info-content">
+              <h3>Téléphone</h3>
+              <p>Répondez à toutes vos questions</p>
+              <a href="tel:+2250123456789">+225 01 23 45 67 89</a>
+              <a href="tel:+2250987654321">+225 09 87 65 43 21</a>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="info-content">
+              <h3>Email</h3>
+              <p>Envoyez-nous un message</p>
+              <a href="mailto:contact@animalcare.ci">contact@animalcare.ci</a>
+              <a href="mailto:urgence@animalcare.ci">urgence@animalcare.ci</a>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="info-content">
+              <h3>Horaires d'ouverture</h3>
+              <ul class="hours-list">
+                <li>
+                  <span class="day">Lundi - Vendredi</span>
+                  <span class="time">8h00 - 18h00</span>
+                </li>
+                <li>
+                  <span class="day">Samedi</span>
+                  <span class="time">9h00 - 17h00</span>
+                </li>
+                <li>
+                  <span class="day">Dimanche</span>
+                  <span class="time">10h00 - 15h00</span>
+                </li>
+                <li>
+                  <span class="day">Urgences</span>
+                  <span class="time" style="color: #ff5722">24h/24</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulaire de contact -->
+        <div class="contact-form">
+          <h3>Envoyez-nous un message</h3>
+
+          <form id="contact-form">
+            <div class="form-group">
+              <label for="contact-name"
+                ><i class="fas fa-user"></i> Nom complet *</label
+              >
+              <input type="text" id="contact-name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-email"
+                ><i class="fas fa-envelope"></i> Email *</label
+              >
+              <input type="email" id="contact-email" required />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-phone"
+                ><i class="fas fa-phone"></i> Téléphone</label
+              >
+              <input type="tel" id="contact-phone" />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-subject"
+                ><i class="fas fa-tag"></i> Sujet *</label
+              >
+              <select id="contact-subject" required>
+                <option value="">Sélectionnez un sujet</option>
+                <option value="vente">Vente d'animaux</option>
+                <option value="soins">Soins et rendez-vous</option>
+                <option value="pharmacie">Commande pharmacie</option>
+                <option value="elevage">Projet d'élevage</option>
+                <option value="urgence">Urgence vétérinaire</option>
+                <option value="autre">Autre demande</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message"
+                ><i class="fas fa-comment"></i> Votre message *</label
+              >
+              <textarea
+                id="contact-message"
+                placeholder="Décrivez votre demande..."
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group" style="margin-top: 3rem">
+              <button type="submit" class="btn" style="width: 100%">
+                <i class="fas fa-paper-plane"></i> Envoyer le message
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Carte -->
+    <section class="map-section">
+      <h2 class="heading">Notre <span>Localisation</span></h2>
+      <p
+        class="description"
+        style="
+          text-align: center;
+          font-size: 1.8rem;
+          color: var(--gray);
+          max-width: 70rem;
+          margin: 0 auto 5rem;
+        "
+      >
+        Retrouvez-nous facilement grâce à notre carte interactive.
+      </p>
+
+      <div id="map"></div>
+    </section>
+
+    <!-- Urgences -->
+    <section class="emergency-section">
+      <div class="emergency-box">
+        <div class="emergency-icon">
+          <i class="fas fa-ambulance"></i>
+        </div>
+        <h3>Service d'Urgence 24h/24</h3>
+        <p>
+          En cas d'urgence vétérinaire, notre équipe est disponible jour et
+          nuit.
+        </p>
+
+        <a href="tel:+2250123456789" class="emergency-phone">
+          <i class="fas fa-phone"></i> +225 01 23 45 67 89
+        </a>
+
+        <p style="font-size: 1.6rem; margin-top: 2rem">
+          <i class="fas fa-exclamation-triangle"></i>
+          Si votre animal présente des symptômes graves, ne perdez pas de temps
+          et appelez immédiatement.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ Contact -->
+    <section class="faq-contact">
+      <h2 class="heading">Questions <span>Fréquentes</span></h2>
+
+      <div class="faq-container">
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Quels sont vos délais de réponse ?</h4>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>
+              Nous nous engageons à répondre à toutes vos demandes dans les
+              meilleurs délais :
+            </p>
+            <ul
+              style="
+                font-size: 1.6rem;
+                color: var(--gray);
+                padding-left: 2rem;
+                margin-top: 1rem;
+              "
+            >
+              <li>Demandes générales : 24 à 48 heures</li>
+              <li>Urgences : immédiatement par téléphone</li>
+              <li>Prise de rendez-vous : confirmation sous 2 heures</li>
+              <li>Questions techniques : sous 72 heures</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Proposez-vous des consultations à domicile ?</h4>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>
+              Oui, nos vétérinaires peuvent se déplacer à votre domicile dans
+              les cas suivants :
+            </p>
+            <ul
+              style="
+                font-size: 1.6rem;
+                color: var(--gray);
+                padding-left: 2rem;
+                margin-top: 1rem;
+              "
+            >
+              <li>Animaux difficiles à transporter</li>
+              <li>Consultations préventives multiples</li>
+              <li>Animaux âgés ou handicapés</li>
+              <li>Sur demande spécifique</li>
+            </ul>
+            <p style="margin-top: 1rem">
+              Des frais de déplacement supplémentaires s'appliquent.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Comment payer mes achats en ligne ?</h4>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Nous acceptons plusieurs modes de paiement :</p>
+            <ul
+              style="
+                font-size: 1.6rem;
+                color: var(--gray);
+                padding-left: 2rem;
+                margin-top: 1rem;
+              "
+            >
+              <li>Carte bancaire (Visa, Mastercard)</li>
+              <li>Paiement mobile (Orange Money, MTN Money)</li>
+              <li>Virement bancaire</li>
+              <li>Paiement à la livraison</li>
+              <li>Paiement en clinique</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Proposez-vous des garanties sur les animaux ?</h4>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Tous nos animaux bénéficient de garanties :</p>
+            <ul
+              style="
+                font-size: 1.6rem;
+                color: var(--gray);
+                padding-left: 2rem;
+                margin-top: 1rem;
+              "
+            >
+              <li>Garantie santé 15 jours</li>
+              <li>Garantie génétique 1 an pour certaines races</li>
+              <li>Certificat vétérinaire de bonne santé</li>
+              <li>Carnet de vaccination à jour</li>
+              <li>Support téléphonique post-adoption</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Réseaux sociaux -->
+    <section class="social-section">
+      <h2 class="heading">Suivez-<span>nous</span></h2>
+      <p
+        class="description"
+        style="
+          font-size: 1.8rem;
+          color: var(--gray);
+          max-width: 70rem;
+          margin: 0 auto;
+        "
+      >
+        Restez connecté pour des conseils, actualités et promotions.
+      </p>
+
+      <div class="social-links">
+        <a href="#" class="social-link" style="color: #1877f2">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" class="social-link" style="color: #1da1f2">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" class="social-link" style="color: #e4405f">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="social-link" style="color: #25d366">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="#" class="social-link" style="color: #ff0000">
+          <i class="fab fa-youtube"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer (identique) -->
+    <footer class="footer">
+      <!-- Identique aux autres pages -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      // Initialisation
+      document.addEventListener("DOMContentLoaded", function () {
+        initializeMap();
+        setupContactForm();
+
+        // Mettre à jour l'année du copyright
+        document.getElementById("current-year").textContent =
+          new Date().getFullYear();
+      });
+
+      // Initialiser la carte
+      function initializeMap() {
+        // Coordonnées d'Abidjan (exemple)
+        const abidjan = [5.359951, -4.008256];
+
+        // Créer la carte
+        const map = L.map("map").setView(abidjan, 15);
+
+        // Ajouter les tuiles
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        // Ajouter un marqueur
+        const marker = L.marker(abidjan).addTo(map);
+        marker
+          .bindPopup(
+            "<b>AnimalCare</b><br>Rue du Commerce, Plateau<br>Abidjan, Côte d'Ivoire"
+          )
+          .openPopup();
+
+        // Ajouter un cercle pour la zone de service
+        L.circle(abidjan, {
+          color: "var(--primary)",
+          fillColor: "var(--primary-light)",
+          fillOpacity: 0.2,
+          radius: 2000,
+        })
+          .addTo(map)
+          .bindPopup("Zone de service");
+      }
+
+      // Configurer le formulaire de contact
+      function setupContactForm() {
+        const form = document.getElementById("contact-form");
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Récupérer les données
+          const formData = {
+            name: document.getElementById("contact-name").value,
+            email: document.getElementById("contact-email").value,
+            phone: document.getElementById("contact-phone").value,
+            subject: document.getElementById("contact-subject").value,
+            message: document.getElementById("contact-message").value,
+            date: new Date().toISOString(),
+          };
+
+          // Validation
+          if (
+            !formData.name ||
+            !formData.email ||
+            !formData.subject ||
+            !formData.message
+          ) {
+            alert("Veuillez remplir tous les champs obligatoires.");
+            return;
+          }
+
+          // Sauvegarder le message
+          saveContactMessage(formData);
+        });
+      }
+
+      // Sauvegarder le message de contact
+      function saveContactMessage(data) {
+        // Récupérer les messages existants
+        let messages =
+          JSON.parse(localStorage.getItem("contactMessages")) || [];
+
+        // Ajouter le nouveau message
+        messages.push({
+          id: Date.now(),
+          ...data,
+          status: "new",
+          read: false,
+        });
+
+        // Sauvegarder
+        localStorage.setItem("contactMessages", JSON.stringify(messages));
+
+        // Afficher une confirmation
+        const message = `
+                Message envoyé avec succès !
+                
+                Sujet: ${getSubjectLabel(data.subject)}
+                
+                Nous vous répondrons dans les plus brefs délais.
+                
+                Un email de confirmation vous a été envoyé à ${data.email}.
+                
+                Merci pour votre message.
+            `;
+
+        alert(message);
+
+        // Réinitialiser le formulaire
+        document.getElementById("contact-form").reset();
+      }
+
+      // Gestion de la FAQ
+      function toggleFaq(element) {
+        const answer = element.nextElementSibling;
+        const icon = element.querySelector("i");
+
+        if (answer.classList.contains("active")) {
+          answer.classList.remove("active");
+          icon.classList.remove("fa-chevron-up");
+          icon.classList.add("fa-chevron-down");
+        } else {
+          // Fermer toutes les autres FAQ
+          document.querySelectorAll(".faq-answer").forEach((item) => {
+            item.classList.remove("active");
+          });
+          document.querySelectorAll(".faq-question i").forEach((item) => {
+            item.classList.remove("fa-chevron-up");
+            item.classList.add("fa-chevron-down");
+          });
+
+          // Ouvrir celle-ci
+          answer.classList.add("active");
+          icon.classList.remove("fa-chevron-down");
+          icon.classList.add("fa-chevron-up");
+        }
+      }
+
+      // Fonctions utilitaires
+      function getSubjectLabel(subject) {
+        const labels = {
+          vente: "Vente d'animaux",
+          soins: "Soins et rendez-vous",
+          pharmacie: "Commande pharmacie",
+          elevage: "Projet d'élevage",
+          urgence: "Urgence vétérinaire",
+          autre: "Autre demande",
+        };
+        return labels[subject] || subject;
+      }
+
+      // Exporter les fonctions
+      window.toggleFaq = toggleFaq;
+    </script>
+  </body>
+</html>

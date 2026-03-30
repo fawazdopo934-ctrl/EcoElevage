@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vente d'Animaux - Animal Care</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/paw.png" />
+
+    <style>
+      /* Styles spécifiques à la page vente */
+      .filters {
+        background: var(--white);
+        padding: 2rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        margin-bottom: 3rem;
+      }
+
+      .filter-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .filter-item label {
+        display: block;
+        font-size: 1.6rem;
+        color: var(--dark);
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      .filter-item select,
+      .filter-item input {
+        width: 100%;
+        padding: 1rem;
+        border: var(--border);
+        border-radius: 8px;
+        font-size: 1.6rem;
+        color: var(--dark);
+        background: var(--light);
+      }
+
+      .filter-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+      }
+
+      .animals-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+        gap: 3rem;
+        margin-top: 3rem;
+      }
+
+      .animal-card-detailed {
+        background: var(--white);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+      }
+
+      .animal-card-detailed:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .animal-image {
+        width: 100%;
+        height: 25rem;
+        object-fit: cover;
+      }
+
+      .animal-info {
+        padding: 2rem;
+      }
+
+      .animal-category {
+        display: inline-block;
+        background: var(--accent);
+        color: var(--white);
+        padding: 0.5rem 1.5rem;
+        border-radius: 20px;
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+      }
+
+      .animal-name {
+        font-size: 2.2rem;
+        color: var(--dark);
+        margin-bottom: 1rem;
+      }
+
+      .animal-details {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.4rem;
+        color: var(--gray);
+      }
+
+      .detail-item i {
+        color: var(--primary);
+      }
+
+      .animal-price {
+        font-size: 2.4rem;
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+      }
+
+      .animal-actions {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .animal-actions .btn {
+        flex: 1;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 4rem;
+        padding-top: 3rem;
+        border-top: var(--border);
+      }
+
+      .pagination-btn {
+        padding: 1rem 2rem;
+        background: var(--light);
+        color: var(--dark);
+        border-radius: 8px;
+        font-size: 1.6rem;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .pagination-btn.active,
+      .pagination-btn:hover {
+        background: var(--primary);
+        color: var(--white);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header (identique à index.html) -->
+    <header class="header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-paw"></i>AnimalCare
+      </a>
+
+      <nav class="navbar">
+        <a href="index.html">Accueil</a>
+        <a href="vente.html" class="active">Vente</a>
+        <a href="soins.html">Soins</a>
+        <a href="pharmacie.html">Pharmacie</a>
+        <a href="elevage.html">Élevage</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="icons">
+        <div class="fas fa-bars" id="menu-btn"></div>
+        <div class="fas fa-search" id="search-btn"></div>
+        <div class="fas fa-shopping-cart" id="cart-btn">
+          <span class="cart-count">0</span>
+        </div>
+        <div class="fas fa-user" id="login-btn"></div>
+      </div>
+
+      <!-- Search Form -->
+      <form action="" class="search-form">
+        <input
+          type="search"
+          id="search-box"
+          placeholder="Rechercher animaux..."
+        />
+        <label for="search-box" class="fas fa-search"></label>
+      </form>
+
+      <!-- Shopping Cart -->
+      <div class="shopping-cart">
+        <div class="cart-items">
+          <!-- Les items seront ajoutés dynamiquement -->
+        </div>
+        <div class="total">Total : <span>0</span> CFA</div>
+        <a href="#" class="btn">Commander</a>
+      </div>
+
+      <!-- Login Form -->
+      <form action="" class="login-form">
+        <h3>Connexion</h3>
+        <input type="email" placeholder="Votre email" class="box" required />
+        <input
+          type="password"
+          placeholder="Votre mot de passe"
+          class="box"
+          required
+        />
+        <div class="remember">
+          <input type="checkbox" id="remember" />
+          <label for="remember">Se souvenir de moi</label>
+        </div>
+        <input type="submit" value="Se connecter" class="btn" />
+        <p>Mot de passe oublié ? <a href="#">Cliquez ici</a></p>
+        <p>
+          Pas de compte ? <a href="#" id="register-link">Créer un compte</a>
+        </p>
+      </form>
+    </header>
+
+    <!-- Page Header -->
+    <section
+      class="page-header"
+      style="
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url('images/animals-header.jpg') center/cover;
+        padding: 15rem 9% 8rem;
+        color: var(--white);
+      "
+    >
+      <h1 style="font-size: 4.5rem; margin-bottom: 2rem">
+        Nos <span style="color: var(--accent)">Animaux</span>
+      </h1>
+      <p
+        style="
+          font-size: 1.8rem;
+          max-width: 70rem;
+          margin: 0 auto;
+          opacity: 0.9;
+        "
+      >
+        Découvrez notre sélection d'animaux en bonne santé, vaccinés et prêts à
+        rejoindre votre famille.
+      </p>
+    </section>
+
+    <!-- Filtres -->
+    <section class="filters-section" style="padding: 5rem 9%">
+      <div class="filters">
+        <div class="filter-group">
+          <div class="filter-item">
+            <label for="category"
+              ><i class="fas fa-filter"></i> Catégorie</label
+            >
+            <select id="category">
+              <option value="all">Tous les animaux</option>
+              <option value="chien">Chiens</option>
+              <option value="chat">Chats</option>
+              <option value="volailles">Volailles</option>
+              <option value="betail">Bétail</option>
+              <option value="autres">Autres</option>
+            </select>
+          </div>
+
+          <div class="filter-item">
+            <label for="age"><i class="fas fa-calendar-alt"></i> Âge</label>
+            <select id="age">
+              <option value="all">Tous âges</option>
+              <option value="baby">Bébé (0-3 mois)</option>
+              <option value="young">Jeune (3-12 mois)</option>
+              <option value="adult">Adulte (1-5 ans)</option>
+              <option value="senior">Senior (+5 ans)</option>
+            </select>
+          </div>
+
+          <div class="filter-item">
+            <label for="price"><i class="fas fa-tag"></i> Prix</label>
+            <select id="price">
+              <option value="all">Tous les prix</option>
+              <option value="0-50000">Moins de 50,000 CFA</option>
+              <option value="50000-150000">50,000 - 150,000 CFA</option>
+              <option value="150000-300000">150,000 - 300,000 CFA</option>
+              <option value="300000+">Plus de 300,000 CFA</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-item">
+            <label for="search-animal"
+              ><i class="fas fa-search"></i> Recherche</label
+            >
+            <input type="text" id="search-animal" placeholder="Nom, race..." />
+          </div>
+
+          <div class="filter-item">
+            <label for="sex"><i class="fas fa-venus-mars"></i> Sexe</label>
+            <select id="sex">
+              <option value="all">Tous</option>
+              <option value="male">Mâle</option>
+              <option value="female">Femelle</option>
+            </select>
+          </div>
+
+          <div class="filter-item">
+            <label for="health"
+              ><i class="fas fa-heartbeat"></i> État de santé</label
+            >
+            <select id="health">
+              <option value="all">Tous</option>
+              <option value="vaccinated">Vacciné</option>
+              <option value="dewormed">Vermifugé</option>
+              <option value="chipped">Pucé</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-actions">
+          <button class="btn btn-outline" id="reset-filters">
+            <i class="fas fa-redo"></i> Réinitialiser
+          </button>
+          <button class="btn" id="apply-filters">
+            <i class="fas fa-search"></i> Appliquer les filtres
+          </button>
+        </div>
+      </div>
+
+      <!-- Grille d'animaux -->
+      <div class="animals-grid" id="animals-grid">
+        <!-- Les animaux seront chargés dynamiquement -->
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination">
+        <!-- La pagination sera générée dynamiquement -->
+      </div>
+    </section>
+
+    <!-- Footer (identique à index.html) -->
+    <footer class="footer">
+      <div class="box-container">
+        <div class="box">
+          <h3>AnimalCare</h3>
+          <p>
+            Votre partenaire de confiance pour l'adoption, les soins et
+            l'élevage d'animaux depuis 2010.
+          </p>
+          <div class="social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>Liens Rapides</h3>
+          <a href="index.html"><i class="fas fa-chevron-right"></i> Accueil</a>
+          <a href="vente.html"><i class="fas fa-chevron-right"></i> Vente</a>
+          <a href="soins.html"><i class="fas fa-chevron-right"></i> Soins</a>
+          <a href="pharmacie.html"
+            ><i class="fas fa-chevron-right"></i> Pharmacie</a
+          >
+          <a href="elevage.html"
+            ><i class="fas fa-chevron-right"></i> Élevage</a
+          >
+        </div>
+
+        <div class="box">
+          <h3>Contact</h3>
+          <a href="tel:+2250123456789"
+            ><i class="fas fa-phone"></i> +225 01 23 45 67 89</a
+          >
+          <a href="mailto:contact@animalcare.ci"
+            ><i class="fas fa-envelope"></i> contact@animalcare.ci</a
+          >
+          <a href="#"
+            ><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d'Ivoire</a
+          >
+        </div>
+
+        <div class="box">
+          <h3>Horaires</h3>
+          <p><i class="fas fa-clock"></i> Lundi - Vendredi: 8h-18h</p>
+          <p><i class="fas fa-clock"></i> Samedi: 9h-17h</p>
+          <p><i class="fas fa-clock"></i> Dimanche: 10h-15h</p>
+          <p><i class="fas fa-clock"></i> Urgences: 24h/24</p>
+        </div>
+      </div>
+
+      <div class="credit">
+        © <span id="current-year"></span> AnimalCare. Tous droits réservés.
+      </div>
+    </footer>
+
+    <!-- Script pour la page vente -->
+    <script src="script.js"></script>
+    <script>
+      // Données des animaux (étendues)
+      const allAnimals = [
+        // Chiens
+        {
+          id: 1,
+          name: "Berger Allemand",
+          category: "chien",
+          price: 75000,
+          age: "3 mois",
+          sex: "male",
+          health: ["vaccinated", "dewormed"],
+          image: "images/dog1.jpg",
+          rating: 4.5,
+        },
+        {
+          id: 2,
+          name: "Labrador Retriever",
+          category: "chien",
+          price: 85000,
+          age: "4 mois",
+          sex: "female",
+          health: ["vaccinated", "dewormed", "chipped"],
+          image: "images/dog2.jpg",
+          rating: 4.9,
+        },
+        {
+          id: 3,
+          name: "Bouledogue Français",
+          category: "chien",
+          price: 120000,
+          age: "2 mois",
+          sex: "male",
+          health: ["vaccinated"],
+          image: "images/dog3.jpg",
+          rating: 4.7,
+        },
+        {
+          id: 4,
+          name: "Rottweiler",
+          category: "chien",
+          price: 95000,
+          age: "5 mois",
+          sex: "male",
+          health: ["vaccinated", "dewormed"],
+          image: "images/dog4.jpg",
+          rating: 4.6,
+        },
+        {
+          id: 5,
+          name: "Caniche",
+          category: "chien",
+          price: 65000,
+          age: "3 mois",
+          sex: "female",
+          health: ["vaccinated"],
+          image: "images/dog5.jpg",
+          rating: 4.8,
+        },
+
+        // Chats
+        {
+          id: 6,
+          name: "Persan",
+          category: "chat",
+          price: 45000,
+          age: "2 mois",
+          sex: "female",
+          health: ["vaccinated"],
+          image: "images/cat1.jpg",
+          rating: 4.8,
+        },
+        {
+          id: 7,
+          name: "Siamois",
+          category: "chat",
+          price: 50000,
+          age: "3 mois",
+          sex: "male",
+          health: ["vaccinated", "dewormed"],
+          image: "images/cat2.jpg",
+          rating: 4.7,
+        },
+        {
+          id: 8,
+          name: "Main Coon",
+          category: "chat",
+          price: 80000,
+          age: "4 mois",
+          sex: "female",
+          health: ["vaccinated", "chipped"],
+          image: "images/cat3.jpg",
+          rating: 4.9,
+        },
+        {
+          id: 9,
+          name: "Bengal",
+          category: "chat",
+          price: 95000,
+          age: "3 mois",
+          sex: "male",
+          health: ["vaccinated", "dewormed"],
+          image: "images/cat4.jpg",
+          rating: 4.6,
+        },
+
+        // Volailles
+        {
+          id: 10,
+          name: "Poule Locale",
+          category: "volailles",
+          price: 5000,
+          age: "6 mois",
+          sex: "female",
+          health: [],
+          image: "images/chicken1.jpg",
+          rating: 4.2,
+        },
+        {
+          id: 11,
+          name: "Poulet de Chair",
+          category: "volailles",
+          price: 3000,
+          age: "2 mois",
+          sex: "male",
+          health: [],
+          image: "images/chicken2.jpg",
+          rating: 4.0,
+        },
+        {
+          id: 12,
+          name: "Canard",
+          category: "volailles",
+          price: 8000,
+          age: "4 mois",
+          sex: "male",
+          health: [],
+          image: "images/duck.jpg",
+          rating: 4.3,
+        },
+
+        // Bétail
+        {
+          id: 13,
+          name: "Mouton",
+          category: "betail",
+          price: 120000,
+          age: "1 an",
+          sex: "male",
+          health: ["vaccinated"],
+          image: "images/sheep1.jpg",
+          rating: 4.7,
+        },
+        {
+          id: 14,
+          name: "Chèvre",
+          category: "betail",
+          price: 85000,
+          age: "8 mois",
+          sex: "female",
+          health: ["vaccinated"],
+          image: "images/goat.jpg",
+          rating: 4.5,
+        },
+        {
+          id: 15,
+          name: "Veau",
+          category: "betail",
+          price: 150000,
+          age: "6 mois",
+          sex: "male",
+          health: ["vaccinated"],
+          image: "images/calf.jpg",
+          rating: 4.8,
+        },
+      ];
+
+      // Éléments DOM
+      const animalsGrid = document.getElementById("animals-grid");
+      const pagination = document.getElementById("pagination");
+      const categoryFilter = document.getElementById("category");
+      const ageFilter = document.getElementById("age");
+      const priceFilter = document.getElementById("price");
+      const searchFilter = document.getElementById("search-animal");
+      const sexFilter = document.getElementById("sex");
+      const healthFilter = document.getElementById("health");
+      const applyFiltersBtn = document.getElementById("apply-filters");
+      const resetFiltersBtn = document.getElementById("reset-filters");
+
+      let currentPage = 1;
+      const animalsPerPage = 6;
+      let filteredAnimals = [...allAnimals];
+
+      // Initialisation
+      document.addEventListener("DOMContentLoaded", function () {
+        displayAnimals();
+        setupFilters();
+        setupPagination();
+
+        // Mettre à jour l'année du copyright
+        document.getElementById("current-year").textContent =
+          new Date().getFullYear();
+      });
+
+      // Afficher les animaux
+      function displayAnimals() {
+        animalsGrid.innerHTML = "";
+
+        if (filteredAnimals.length === 0) {
+          animalsGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 5rem;">
+                        <i class="fas fa-search" style="font-size: 5rem; color: var(--gray); margin-bottom: 2rem;"></i>
+                        <h3 style="font-size: 2.5rem; color: var(--dark); margin-bottom: 1rem;">Aucun animal trouvé</h3>
+                        <p style="font-size: 1.6rem; color: var(--gray);">Essayez de modifier vos critères de recherche.</p>
+                    </div>
+                `;
+          return;
+        }
+
+        const start = (currentPage - 1) * animalsPerPage;
+        const end = start + animalsPerPage;
+        const animalsToDisplay = filteredAnimals.slice(start, end);
+
+        animalsToDisplay.forEach((animal) => {
+          const animalCard = document.createElement("div");
+          animalCard.className = "animal-card-detailed";
+          animalCard.innerHTML = `
+                    <img src="${animal.image}" alt="${
+            animal.name
+          }" class="animal-image">
+                    <div class="animal-info">
+                        <span class="animal-category">${getCategoryLabel(
+                          animal.category
+                        )}</span>
+                        <h3 class="animal-name">${animal.name}</h3>
+                        
+                        <div class="animal-details">
+                            <div class="detail-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>${animal.age}</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-${
+                                  animal.sex === "male" ? "mars" : "venus"
+                                }"></i>
+                                <span>${
+                                  animal.sex === "male" ? "Mâle" : "Femelle"
+                                }</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-heartbeat"></i>
+                                <span>${getHealthLabel(animal.health)}</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-star"></i>
+                                <span>${animal.rating}/5</span>
+                            </div>
+                        </div>
+                        
+                        <div class="animal-price">${animal.price.toLocaleString()} CFA</div>
+                        
+                        <div class="animal-actions">
+                            <button class="btn add-to-cart" data-id="${
+                              animal.id
+                            }">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                            <button class="btn btn-outline view-details" data-id="${
+                              animal.id
+                            }">
+                                <i class="fas fa-eye"></i> Détails
+                            </button>
+                        </div>
+                    </div>
+                `;
+          animalsGrid.appendChild(animalCard);
+        });
+
+        // Ajouter les événements
+        document.querySelectorAll(".add-to-cart").forEach((button) => {
+          button.addEventListener("click", addToCart);
+        });
+
+        document.querySelectorAll(".view-details").forEach((button) => {
+          button.addEventListener("click", viewAnimalDetails);
+        });
+      }
+
+      // Configurer les filtres
+      function setupFilters() {
+        applyFiltersBtn.addEventListener("click", applyFilters);
+        resetFiltersBtn.addEventListener("click", resetFilters);
+
+        // Recherche en temps réel
+        searchFilter.addEventListener("input", debounce(applyFilters, 300));
+      }
+
+      // Appliquer les filtres
+      function applyFilters() {
+        filteredAnimals = allAnimals.filter((animal) => {
+          // Filtre par catégorie
+          if (
+            categoryFilter.value !== "all" &&
+            animal.category !== categoryFilter.value
+          ) {
+            return false;
+          }
+
+          // Filtre par âge
+          if (ageFilter.value !== "all") {
+            const age = animal.age.toLowerCase();
+            const filterAge = ageFilter.value;
+
+            if (filterAge === "baby" && !age.includes("mois")) return false;
+            if (filterAge === "young" && !age.includes("mois")) return false;
+            if (filterAge === "adult" && !age.includes("an")) return false;
+            if (filterAge === "senior" && !age.includes("an")) return false;
+          }
+
+          // Filtre par prix
+          if (priceFilter.value !== "all") {
+            const [min, max] = priceFilter.value.split("-").map((val) => {
+              if (val.endsWith("+")) return parseInt(val);
+              return val ? parseInt(val) : null;
+            });
+
+            if (min !== null && animal.price < min) return false;
+            if (max !== null && animal.price > max) return false;
+          }
+
+          // Filtre par recherche
+          if (searchFilter.value) {
+            const searchTerm = searchFilter.value.toLowerCase();
+            if (!animal.name.toLowerCase().includes(searchTerm)) {
+              return false;
+            }
+          }
+
+          // Filtre par sexe
+          if (sexFilter.value !== "all" && animal.sex !== sexFilter.value) {
+            return false;
+          }
+
+          // Filtre par santé
+          if (healthFilter.value !== "all") {
+            if (!animal.health.includes(healthFilter.value)) {
+              return false;
+            }
+          }
+
+          return true;
+        });
+
+        currentPage = 1;
+        displayAnimals();
+        setupPagination();
+      }
+
+      // Réinitialiser les filtres
+      function resetFilters() {
+        categoryFilter.value = "all";
+        ageFilter.value = "all";
+        priceFilter.value = "all";
+        searchFilter.value = "";
+        sexFilter.value = "all";
+        healthFilter.value = "all";
+
+        filteredAnimals = [...allAnimals];
+        currentPage = 1;
+        displayAnimals();
+        setupPagination();
+      }
+
+      // Configurer la pagination
+      function setupPagination() {
+        pagination.innerHTML = "";
+
+        const totalPages = Math.ceil(filteredAnimals.length / animalsPerPage);
+
+        if (totalPages <= 1) return;
+
+        // Bouton précédent
+        if (currentPage > 1) {
+          const prevBtn = document.createElement("button");
+          prevBtn.className = "pagination-btn";
+          prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+          prevBtn.addEventListener("click", () => {
+            currentPage--;
+            displayAnimals();
+            setupPagination();
+          });
+          pagination.appendChild(prevBtn);
+        }
+
+        // Pages
+        for (let i = 1; i <= totalPages; i++) {
+          const pageBtn = document.createElement("button");
+          pageBtn.className = `pagination-btn ${
+            i === currentPage ? "active" : ""
+          }`;
+          pageBtn.textContent = i;
+          pageBtn.addEventListener("click", () => {
+            currentPage = i;
+            displayAnimals();
+            setupPagination();
+          });
+          pagination.appendChild(pageBtn);
+        }
+
+        // Bouton suivant
+        if (currentPage < totalPages) {
+          const nextBtn = document.createElement("button");
+          nextBtn.className = "pagination-btn";
+          nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+          nextBtn.addEventListener("click", () => {
+            currentPage++;
+            displayAnimals();
+            setupPagination();
+          });
+          pagination.appendChild(nextBtn);
+        }
+      }
+
+      // Voir les détails d'un animal
+      function viewAnimalDetails(e) {
+        const animalId = parseInt(e.target.closest(".view-details").dataset.id);
+        const animal = allAnimals.find((a) => a.id === animalId);
+
+        if (animal) {
+          // Ici, vous pourriez ouvrir un modal avec les détails complets
+          // Pour l'instant, on affiche juste une alerte
+          const message = `
+                    Détails de ${animal.name}:
+                    
+                    Catégorie: ${getCategoryLabel(animal.category)}
+                    Âge: ${animal.age}
+                    Sexe: ${animal.sex === "male" ? "Mâle" : "Femelle"}
+                    Prix: ${animal.price.toLocaleString()} CFA
+                    Santé: ${getHealthLabel(animal.health)}
+                    Note: ${animal.rating}/5
+                    
+                    Pour plus d'informations, contactez-nous !
+                `;
+
+          alert(message);
+        }
+      }
+
+      // Fonctions utilitaires
+      function getCategoryLabel(category) {
+        const labels = {
+          chien: "Chien",
+          chat: "Chat",
+          volailles: "Volailles",
+          betail: "Bétail",
+          autres: "Autres",
+        };
+        return labels[category] || category;
+      }
+
+      function getHealthLabel(health) {
+        const labels = {
+          vaccinated: "Vacciné",
+          dewormed: "Vermifugé",
+          chipped: "Pucé",
+        };
+
+        if (health.length === 0) return "En bonne santé";
+        return health.map((h) => labels[h] || h).join(", ");
+      }
+
+      function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+          };
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
+      }
+    </script>
+  </body>
+</html>

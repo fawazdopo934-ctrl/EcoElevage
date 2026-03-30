@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soins des Animaux - Animal Care</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- FullCalendar CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css"
+    />
+
+    <style>
+      /* Styles spécifiques à la page soins */
+      .services-details {
+        padding: 8rem 9%;
+        background: var(--light);
+      }
+
+      .service-item {
+        background: var(--white);
+        border-radius: var(--radius);
+        padding: 3rem;
+        margin-bottom: 3rem;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: flex-start;
+        gap: 3rem;
+      }
+
+      .service-icon {
+        flex-shrink: 0;
+        width: 8rem;
+        height: 8rem;
+        background: var(--primary-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3.5rem;
+        color: var(--white);
+      }
+
+      .service-content {
+        flex: 1;
+      }
+
+      .service-content h3 {
+        font-size: 2.4rem;
+        color: var(--dark);
+        margin-bottom: 1.5rem;
+      }
+
+      .service-content p {
+        font-size: 1.6rem;
+        color: var(--gray);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+      }
+
+      .service-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .feature {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.6rem;
+        color: var(--dark);
+      }
+
+      .feature i {
+        color: var(--primary);
+      }
+
+      /* Formulaire de rendez-vous */
+      .appointment-section {
+        padding: 8rem 9%;
+        background: var(--white);
+      }
+
+      .appointment-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+        gap: 5rem;
+        align-items: start;
+      }
+
+      .calendar-container {
+        background: var(--light);
+        border-radius: var(--radius);
+        padding: 2rem;
+        box-shadow: var(--shadow);
+      }
+
+      .appointment-form-container {
+        background: var(--light);
+        border-radius: var(--radius);
+        padding: 3rem;
+        box-shadow: var(--shadow);
+      }
+
+      .appointment-form h3 {
+        font-size: 2.4rem;
+        color: var(--dark);
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .form-group {
+        margin-bottom: 2rem;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 1.6rem;
+        color: var(--dark);
+        margin-bottom: 0.8rem;
+        font-weight: 500;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 1.2rem;
+        border: var(--border);
+        border-radius: 8px;
+        font-size: 1.6rem;
+        color: var(--dark);
+        background: var(--white);
+      }
+
+      .form-group textarea {
+        height: 15rem;
+        resize: vertical;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+
+      /* Horaires disponibles */
+      .time-slots {
+        margin-top: 3rem;
+      }
+
+      .time-slots h4 {
+        font-size: 1.8rem;
+        color: var(--dark);
+        margin-bottom: 1.5rem;
+      }
+
+      .slot-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+        gap: 1rem;
+      }
+
+      .time-slot {
+        padding: 1rem;
+        background: var(--white);
+        border: 2px solid var(--light-gray);
+        border-radius: 8px;
+        text-align: center;
+        font-size: 1.4rem;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .time-slot:hover,
+      .time-slot.selected {
+        background: var(--primary);
+        color: var(--white);
+        border-color: var(--primary);
+      }
+
+      /* Vétérinaires */
+      .veterinarians {
+        padding: 8rem 9%;
+        background: var(--light);
+      }
+
+      .vet-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+        gap: 3rem;
+      }
+
+      .vet-card {
+        background: var(--white);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        text-align: center;
+      }
+
+      .vet-image {
+        width: 100%;
+        height: 25rem;
+        object-fit: cover;
+      }
+
+      .vet-info {
+        padding: 2rem;
+      }
+
+      .vet-info h4 {
+        font-size: 2rem;
+        color: var(--dark);
+        margin-bottom: 0.5rem;
+      }
+
+      .vet-specialty {
+        color: var(--primary);
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+      }
+
+      .vet-experience {
+        font-size: 1.4rem;
+        color: var(--gray);
+        margin-bottom: 1rem;
+      }
+
+      .vet-rating {
+        color: #ffc107;
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+      }
+
+      /* FAQ */
+      .faq-section {
+        padding: 8rem 9%;
+        background: var(--white);
+      }
+
+      .faq-container {
+        max-width: 80rem;
+        margin: 0 auto;
+      }
+
+      .faq-item {
+        margin-bottom: 2rem;
+        border: var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .faq-question {
+        padding: 2rem;
+        background: var(--light);
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .faq-question h4 {
+        font-size: 1.8rem;
+        color: var(--dark);
+        margin: 0;
+      }
+
+      .faq-answer {
+        padding: 0 2rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .faq-answer.active {
+        padding: 2rem;
+        max-height: 50rem;
+      }
+
+      .faq-answer p {
+        font-size: 1.6rem;
+        color: var(--gray);
+        line-height: 1.8;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header (identique) -->
+    <header class="header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-paw"></i>AnimalCare
+      </a>
+
+      <nav class="navbar">
+        <a href="index.html">Accueil</a>
+        <a href="vente.html">Vente</a>
+        <a href="soins.html" class="active">Soins</a>
+        <a href="pharmacie.html">Pharmacie</a>
+        <a href="elevage.html">Élevage</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="icons">
+        <div class="fas fa-bars" id="menu-btn"></div>
+        <div class="fas fa-search" id="search-btn"></div>
+        <div class="fas fa-shopping-cart" id="cart-btn">
+          <span class="cart-count">0</span>
+        </div>
+        <div class="fas fa-user" id="login-btn"></div>
+      </div>
+
+      <!-- Formulaires (identique) -->
+    </header>
+
+    <!-- Page Header -->
+    <section
+      class="page-header"
+      style="
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url('images/care-header.jpg') center/cover;
+        padding: 15rem 9% 8rem;
+        color: var(--white);
+      "
+    >
+      <h1 style="font-size: 4.5rem; margin-bottom: 2rem">
+        Soins & <span style="color: var(--accent)">Toilettage</span>
+      </h1>
+      <p
+        style="
+          font-size: 1.8rem;
+          max-width: 70rem;
+          margin: 0 auto;
+          opacity: 0.9;
+        "
+      >
+        Des services professionnels pour le bien-être de vos animaux. Prenez
+        rendez-vous en ligne !
+      </p>
+    </section>
+
+    <!-- Services détaillés -->
+    <section class="services-details">
+      <h2 class="heading">Nos <span>Services de Soins</span></h2>
+      <p
+        class="description"
+        style="
+          text-align: center;
+          font-size: 1.8rem;
+          color: var(--gray);
+          max-width: 70rem;
+          margin: 0 auto 5rem;
+        "
+      >
+        Nous proposons une gamme complète de services pour assurer la santé et
+        le bien-être de votre animal.
+      </p>
+
+      <div class="services-list">
+        <!-- Service 1: Toilettage -->
+        <div class="service-item">
+          <div class="service-icon">
+            <i class="fas fa-bath"></i>
+          </div>
+          <div class="service-content">
+            <h3>Toilettage Complet</h3>
+            <p>
+              Notre service de toilettage inclut bain, brossage, coupe des
+              griffes, nettoyage des oreilles et plus encore. Utilisation de
+              produits hypoallergéniques adaptés à chaque type de poil.
+            </p>
+            <div class="service-features">
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Bain et séchage professionnel</span>
+              </div>
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Coupe de poils selon race</span>
+              </div>
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Nettoyage oreilles et yeux</span>
+              </div>
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Coupe des griffes</span>
+              </div>
+            </div>
+            <div
+              class="price"
+              style="
+                font-size: 2.2rem;
+                color: var(--primary);
+                font-weight: 600;
+                margin-top: 2rem;
+              "
+            >
+              À partir de 15,000 CFA
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 2: Vaccination -->
+        <div class="service-item">
+          <div class="service-icon">
+            <i class="fas fa-syringe"></i>
+          </div>
+          <div class="service-content">
+            <h3>Vaccination & Prévention</h3>
+            <p>
+              Protégez votre animal contre les maladies courantes avec notre
+              programme de vaccination complet. Suivi personnalisé et carnet de
+              santé fourni.
+            </p>
+            <div class="service-features">
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Vaccins de base et optionnels</span>
+              </div>
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Vermifugation</span>
+              </div>
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Traitement anti-parasites</span>
+              </div>
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Carnet de santé numérique</span>
+              </div>
+            </div>
+            <div
+              class="price"
+              style="
+                font-size: 2.2rem;
+                color: var(--primary);
+                font-weight: 600;
+                margin-top: 2rem;
+              "
+            >
+              À partir de 10,000 CFA
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 3: Consultation vétérinaire -->
+        <div class="service-item">
+          <div class="service-icon">
+            <i class="fas fa-user-md"></i>
+          </div>
+          <div class="service-content">
+            <h3>Consultation Vétérinaire</h3>
+            <p>
+              Nos vétérinaires diplômés assurent des consultations complètes,
+              diagnostics et traitements pour toutes les espèces animales.
+            </p>
+            <div class="service-features">
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Consultation générale</span>
+              </div>
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Diagnostic et analyses</span>
+              </div>
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Prescriptions médicales</span>
+              </div>
+              <div class="feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Suivi post-opératoire</span>
+              </div>
+            </div>
+            <div
+              class="price"
+              style="
+                font-size: 2.2rem;
+                color: var(--primary);
+                font-weight: 600;
+                margin-top: 2rem;
+              "
+            >
+              À partir de 20,000 CFA
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prise de rendez-vous -->
+    <section class="appointment-section" id="appointment">
+      <h2 class="heading">Prendre <span>Rendez-vous</span></h2>
+
+      <div class="appointment-container">
+        <!-- Calendrier -->
+        <div class="calendar-container">
+          <div id="calendar"></div>
+        </div>
+
+        <!-- Formulaire -->
+        <div class="appointment-form-container">
+          <form class="appointment-form" id="appointment-form">
+            <h3>Réserver un créneau</h3>
+
+            <div class="form-group">
+              <label for="service-type"
+                ><i class="fas fa-stethoscope"></i> Type de service</label
+              >
+              <select id="service-type" required>
+                <option value="">Sélectionnez un service</option>
+                <option value="grooming">Toilettage</option>
+                <option value="vaccination">Vaccination</option>
+                <option value="consultation">Consultation vétérinaire</option>
+                <option value="emergency">Urgence</option>
+                <option value="other">Autre</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="animal-type"
+                  ><i class="fas fa-paw"></i> Type d'animal</label
+                >
+                <select id="animal-type" required>
+                  <option value="">Sélectionnez</option>
+                  <option value="dog">Chien</option>
+                  <option value="cat">Chat</option>
+                  <option value="bird">Oiseau</option>
+                  <option value="other">Autre</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="animal-breed"
+                  ><i class="fas fa-dna"></i> Race</label
+                >
+                <input
+                  type="text"
+                  id="animal-breed"
+                  placeholder="Ex: Berger Allemand"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="appointment-date"
+                  ><i class="fas fa-calendar-day"></i> Date choisie</label
+                >
+                <input type="text" id="appointment-date" readonly />
+              </div>
+
+              <div class="form-group">
+                <label for="appointment-time"
+                  ><i class="fas fa-clock"></i> Heure choisie</label
+                >
+                <input type="text" id="appointment-time" readonly />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="owner-name"
+                ><i class="fas fa-user"></i> Votre nom complet</label
+              >
+              <input type="text" id="owner-name" required />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone"
+                  ><i class="fas fa-phone"></i> Téléphone</label
+                >
+                <input type="tel" id="phone" required />
+              </div>
+
+              <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" id="email" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="notes"
+                ><i class="fas fa-comment"></i> Notes supplémentaires</label
+              >
+              <textarea
+                id="notes"
+                placeholder="Décrivez les symptômes ou demandes particulières..."
+              ></textarea>
+            </div>
+
+            <!-- Horaires disponibles -->
+            <div class="time-slots">
+              <h4>
+                Horaires disponibles pour le
+                <span id="selected-date">--/--/----</span>
+              </h4>
+              <div class="slot-grid" id="time-slots">
+                <!-- Les créneaux seront chargés dynamiquement -->
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn"
+              style="width: 100%; margin-top: 2rem"
+            >
+              <i class="fas fa-calendar-check"></i> Confirmer le rendez-vous
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notre équipe -->
+    <section class="veterinarians">
+      <h2 class="heading">Notre <span>Équipe Vétérinaire</span></h2>
+      <p
+        class="description"
+        style="
+          text-align: center;
+          font-size: 1.8rem;
+          color: var(--gray);
+          max-width: 70rem;
+          margin: 0 auto 5rem;
+        "
+      >
+        Des professionnels expérimentés dédiés à la santé de vos animaux.
+      </p>
+
+      <div class="vet-grid">
+        <div class="vet-card">
+          <img src="images/vet1.jpg" alt="Dr. Marie Koné" class="vet-image" />
+          <div class="vet-info">
+            <h4>Dr. Marie Koné</h4>
+            <p class="vet-specialty">Vétérinaire générale</p>
+            <p class="vet-experience">15 ans d'expérience</p>
+            <div class="vet-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+            <p class="vet-bio" style="font-size: 1.4rem; color: var(--gray)">
+              Spécialisée en médecine interne et chirurgie douce.
+            </p>
+          </div>
+        </div>
+
+        <div class="vet-card">
+          <img src="images/vet2.jpg" alt="Dr. Jean Traoré" class="vet-image" />
+          <div class="vet-info">
+            <h4>Dr. Jean Traoré</h4>
+            <p class="vet-specialty">Chirurgien vétérinaire</p>
+            <p class="vet-experience">12 ans d'expérience</p>
+            <div class="vet-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="vet-bio" style="font-size: 1.4rem; color: var(--gray)">
+              Expert en chirurgie orthopédique et traumatologie.
+            </p>
+          </div>
+        </div>
+
+        <div class="vet-card">
+          <img src="images/vet3.jpg" alt="Dr. Aïcha Diop" class="vet-image" />
+          <div class="vet-info">
+            <h4>Dr. Aïcha Diop</h4>
+            <p class="vet-specialty">Spécialiste petits animaux</p>
+            <p class="vet-experience">8 ans d'expérience</p>
+            <div class="vet-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+            <p class="vet-bio" style="font-size: 1.4rem; color: var(--gray)">
+              Passionnée par la dermatologie et la nutrition animale.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <h2 class="heading">Questions <span>Fréquentes</span></h2>
+
+      <div class="faq-container">
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Quels documents dois-je apporter pour la première visite ?</h4>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Pour la première consultation, apportez :</p>
+            <ul
+              style="
+                font-size: 1.6rem;
+                color: var(--gray);
+                padding-left: 2rem;
+                margin-top: 1rem;
+              "
+            >
+              <li>Les anciens carnets de santé/vaccination si vous en avez</li>
+              <li>Les résultats d'analyses précédentes</li>
+              <li>Une liste des médicaments actuels</li>
+              <li>Votre pièce d'identité</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Dois-je mettre mon animal à jeun avant une consultation ?</h4>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Cela dépend du type de consultation :</p>
+            <ul
+              style="
+                font-size: 1.6rem;
+                color: var(--gray);
+                padding-left: 2rem;
+                margin-top: 1rem;
+              "
+            >
+              <li>Pour une consultation générale : pas nécessaire</li>
+              <li>
+                Pour une chirurgie ou des analyses sanguines : 12h de jeûne
+              </li>
+              <li>Pour une échographie abdominale : 8h de jeûne</li>
+            </ul>
+            <p style="margin-top: 1rem">
+              L'eau reste autorisée dans tous les cas.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Quels sont vos horaires d'urgence ?</h4>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>
+              Notre service d'urgence fonctionne 24h/24 et 7j/7. En cas
+              d'urgence :
+            </p>
+            <ul
+              style="
+                font-size: 1.6rem;
+                color: var(--gray);
+                padding-left: 2rem;
+                margin-top: 1rem;
+              "
+            >
+              <li>Appelez le +225 01 23 45 67 89</li>
+              <li>Présentez-vous directement à la clinique</li>
+              <li>Essayez de garder l'animal calme pendant le transport</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Proposez-vous des forfaits de soins ?</h4>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Oui, nous proposons plusieurs forfaits adaptés :</p>
+            <ul
+              style="
+                font-size: 1.6rem;
+                color: var(--gray);
+                padding-left: 2rem;
+                margin-top: 1rem;
+              "
+            >
+              <li>
+                Forfait "Jeune animal" : vaccination + vermifugation +
+                identification
+              </li>
+              <li>Forfait "Senior" : bilan sanguin + consultation + suivi</li>
+              <li>Forfait "Toilettage" : 10 séances à prix réduit</li>
+              <li>Forfait "Élevage" : suivi de troupeau + prévention</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer (identique) -->
+    <footer class="footer">
+      <!-- Identique aux autres pages -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script>
+      // Initialisation du calendrier
+      document.addEventListener("DOMContentLoaded", function () {
+        initializeCalendar();
+        setupAppointmentForm();
+
+        // Mettre à jour l'année du copyright
+        document.getElementById("current-year").textContent =
+          new Date().getFullYear();
+
+        // Horaires par défaut
+        updateTimeSlots("09:00");
+      });
+
+      // Calendrier
+      function initializeCalendar() {
+        const calendarEl = document.getElementById("calendar");
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: "dayGridMonth",
+          locale: "fr",
+          headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay",
+          },
+          selectable: true,
+          select: function (info) {
+            const selectedDate = info.startStr.split("T")[0];
+            const formattedDate = formatDate(new Date(selectedDate));
+
+            document.getElementById("appointment-date").value = formattedDate;
+            document.getElementById("selected-date").textContent =
+              formattedDate;
+
+            // Générer des horaires aléatoires pour cette date
+            generateTimeSlots();
+          },
+          events: [
+            // Rendez-vous déjà pris (exemples)
+            {
+              title: "Rendez-vous",
+              start: new Date().toISOString().split("T")[0] + "T10:00:00",
+              end: new Date().toISOString().split("T")[0] + "T11:00:00",
+              color: "#ff9800",
+            },
+            {
+              title: "Vaccination",
+              start:
+                new Date(Date.now() + 86400000).toISOString().split("T")[0] +
+                "T14:00:00",
+              end:
+                new Date(Date.now() + 86400000).toISOString().split("T")[0] +
+                "T15:00:00",
+              color: "#4caf50",
+            },
+          ],
+        });
+
+        calendar.render();
+
+        // Date d'aujourd'hui par défaut
+        const today = new Date();
+        document.getElementById("appointment-date").value = formatDate(today);
+        document.getElementById("selected-date").textContent =
+          formatDate(today);
+      }
+
+      // Formulaire de rendez-vous
+      function setupAppointmentForm() {
+        const form = document.getElementById("appointment-form");
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Récupérer les données du formulaire
+          const formData = {
+            service: document.getElementById("service-type").value,
+            animalType: document.getElementById("animal-type").value,
+            breed: document.getElementById("animal-breed").value,
+            date: document.getElementById("appointment-date").value,
+            time: document.getElementById("appointment-time").value,
+            name: document.getElementById("owner-name").value,
+            phone: document.getElementById("phone").value,
+            email: document.getElementById("email").value,
+            notes: document.getElementById("notes").value,
+          };
+
+          // Validation
+          if (
+            !formData.service ||
+            !formData.animalType ||
+            !formData.date ||
+            !formData.time ||
+            !formData.name ||
+            !formData.phone
+          ) {
+            alert("Veuillez remplir tous les champs obligatoires.");
+            return;
+          }
+
+          // Sauvegarder le rendez-vous
+          saveAppointment(formData);
+        });
+      }
+
+      // Générer les horaires disponibles
+      function generateTimeSlots() {
+        const timeSlotsContainer = document.getElementById("time-slots");
+        timeSlotsContainer.innerHTML = "";
+
+        // Horaires d'ouverture
+        const startHour = 8;
+        const endHour = 18;
+        const slotDuration = 30; // minutes
+
+        // Générer les créneaux
+        for (let hour = startHour; hour < endHour; hour++) {
+          for (let minute = 0; minute < 60; minute += slotDuration) {
+            const timeString = `${hour.toString().padStart(2, "0")}:${minute
+              .toString()
+              .padStart(2, "0")}`;
+
+            // Exclure certains créneaux (exemple)
+            if (timeString === "12:00" || timeString === "13:00") continue;
+
+            const slot = document.createElement("div");
+            slot.className = "time-slot";
+            slot.textContent = timeString;
+            slot.dataset.time = timeString;
+
+            slot.addEventListener("click", function () {
+              // Désélectionner tous les créneaux
+              document.querySelectorAll(".time-slot").forEach((s) => {
+                s.classList.remove("selected");
+              });
+
+              // Sélectionner ce créneau
+              this.classList.add("selected");
+
+              // Mettre à jour le champ heure
+              document.getElementById("appointment-time").value = timeString;
+              updateTimeSlots(timeString);
+            });
+
+            timeSlotsContainer.appendChild(slot);
+          }
+        }
+
+        // Sélectionner le premier créneau par défaut
+        const firstSlot = timeSlotsContainer.querySelector(".time-slot");
+        if (firstSlot) {
+          firstSlot.click();
+        }
+      }
+
+      function updateTimeSlots(selectedTime) {
+        // Ici, vous pourriez vérifier les disponibilités réelles
+        // Pour l'instant, on simule juste
+        document.querySelectorAll(".time-slot").forEach((slot) => {
+          if (slot.dataset.time === selectedTime) {
+            slot.classList.add("selected");
+          } else {
+            slot.classList.remove("selected");
+          }
+        });
+      }
+
+      // Sauvegarder le rendez-vous
+      function saveAppointment(data) {
+        // Récupérer les rendez-vous existants
+        let appointments =
+          JSON.parse(localStorage.getItem("appointments")) || [];
+
+        // Ajouter le nouveau rendez-vous
+        appointments.push({
+          id: Date.now(),
+          ...data,
+          status: "pending",
+          createdAt: new Date().toISOString(),
+        });
+
+        // Sauvegarder
+        localStorage.setItem("appointments", JSON.stringify(appointments));
+
+        // Afficher une confirmation
+        const message = `
+                Rendez-vous confirmé !
+                
+                Service: ${getServiceLabel(data.service)}
+                Date: ${data.date}
+                Heure: ${data.time}
+                Animal: ${getAnimalLabel(data.animalType)} (${
+          data.breed || "Non spécifié"
+        })
+                
+                Nous vous contacterons pour confirmation.
+                Merci !
+            `;
+
+        alert(message);
+
+        // Réinitialiser le formulaire
+        document.getElementById("appointment-form").reset();
+        document.getElementById("appointment-date").value = formatDate(
+          new Date()
+        );
+        document.getElementById("appointment-time").value = "";
+
+        // Générer de nouveaux créneaux
+        generateTimeSlots();
+      }
+
+      // Fonctions utilitaires
+      function formatDate(date) {
+        return date.toLocaleDateString("fr-FR", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+      }
+
+      function getServiceLabel(service) {
+        const labels = {
+          grooming: "Toilettage",
+          vaccination: "Vaccination",
+          consultation: "Consultation vétérinaire",
+          emergency: "Urgence",
+          other: "Autre",
+        };
+        return labels[service] || service;
+      }
+
+      function getAnimalLabel(animal) {
+        const labels = {
+          dog: "Chien",
+          cat: "Chat",
+          bird: "Oiseau",
+          other: "Autre",
+        };
+        return labels[animal] || animal;
+      }
+
+      // FAQ
+      function toggleFaq(element) {
+        const answer = element.nextElementSibling;
+        const icon = element.querySelector("i");
+
+        if (answer.classList.contains("active")) {
+          answer.classList.remove("active");
+          icon.classList.remove("fa-chevron-up");
+          icon.classList.add("fa-chevron-down");
+        } else {
+          // Fermer toutes les autres FAQ
+          document.querySelectorAll(".faq-answer").forEach((item) => {
+            item.classList.remove("active");
+          });
+          document.querySelectorAll(".faq-question i").forEach((item) => {
+            item.classList.remove("fa-chevron-up");
+            item.classList.add("fa-chevron-down");
+          });
+
+          // Ouvrir celle-ci
+          answer.classList.add("active");
+          icon.classList.remove("fa-chevron-down");
+          icon.classList.add("fa-chevron-up");
+        }
+      }
+    </script>
+  </body>
+</html>

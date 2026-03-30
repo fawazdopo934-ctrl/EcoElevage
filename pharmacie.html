@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pharmacie Vétérinaire - Animal Care</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* Styles spécifiques à la page pharmacie */
+      .pharmacy-header {
+        background: linear-gradient(
+            rgba(46, 125, 50, 0.9),
+            rgba(46, 125, 50, 0.9)
+          ),
+          url("images/pharmacy-bg.jpg") center/cover;
+        padding: 15rem 9% 8rem;
+        color: var(--white);
+        text-align: center;
+      }
+
+      .pharmacy-header h1 {
+        font-size: 4.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .pharmacy-header p {
+        font-size: 1.8rem;
+        max-width: 70rem;
+        margin: 0 auto;
+        opacity: 0.9;
+      }
+
+      /* Catégories */
+      .categories-section {
+        padding: 8rem 9%;
+        background: var(--light);
+      }
+
+      .category-filter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 5rem;
+      }
+
+      .category-btn {
+        padding: 1rem 2rem;
+        background: var(--white);
+        border: 2px solid var(--light-gray);
+        border-radius: 30px;
+        font-size: 1.6rem;
+        color: var(--dark);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .category-btn:hover,
+      .category-btn.active {
+        background: var(--primary);
+        color: var(--white);
+        border-color: var(--primary);
+      }
+
+      /* Produits */
+      .products-section {
+        padding: 8rem 9%;
+        background: var(--white);
+      }
+
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
+        gap: 3rem;
+      }
+
+      .product-card {
+        background: var(--light);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        position: relative;
+      }
+
+      .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .product-badge {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background: var(--primary);
+        color: var(--white);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        z-index: 1;
+      }
+
+      .product-image {
+        width: 100%;
+        height: 20rem;
+        object-fit: contain;
+        background: var(--white);
+        padding: 2rem;
+      }
+
+      .product-info {
+        padding: 2rem;
+      }
+
+      .product-category {
+        display: inline-block;
+        color: var(--primary);
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .product-name {
+        font-size: 1.8rem;
+        color: var(--dark);
+        margin-bottom: 1rem;
+        min-height: 5.4rem;
+      }
+
+      .product-description {
+        font-size: 1.4rem;
+        color: var(--gray);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      .product-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #dee2e6;
+      }
+
+      .product-price {
+        font-size: 2.2rem;
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      .product-stock {
+        font-size: 1.4rem;
+        color: var(--gray);
+      }
+
+      .product-stock.in-stock {
+        color: #4caf50;
+      }
+
+      .product-stock.low-stock {
+        color: #ff9800;
+      }
+
+      .product-actions {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .quantity-control {
+        display: flex;
+        align-items: center;
+        background: var(--white);
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #dee2e6;
+      }
+
+      .quantity-btn {
+        width: 3.5rem;
+        height: 3.5rem;
+        background: var(--light);
+        border: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .quantity-input {
+        width: 4rem;
+        height: 3.5rem;
+        border: none;
+        text-align: center;
+        font-size: 1.6rem;
+        background: var(--white);
+      }
+
+      /* Panier flottant */
+      .cart-summary {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: var(--primary);
+        color: var(--white);
+        padding: 1.5rem 2rem;
+        border-radius: var(--radius);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        z-index: 100;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .cart-summary:hover {
+        transform: translateY(-3px);
+      }
+
+      .cart-icon {
+        position: relative;
+      }
+
+      .cart-count {
+        position: absolute;
+        top: -0.8rem;
+        right: -0.8rem;
+        background: #ff5722;
+        color: white;
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .cart-total {
+        font-size: 1.8rem;
+        font-weight: 600;
+      }
+
+      /* Prescription */
+      .prescription-section {
+        padding: 8rem 9%;
+        background: var(--light);
+      }
+
+      .prescription-box {
+        background: var(--white);
+        border-radius: var(--radius);
+        padding: 4rem;
+        box-shadow: var(--shadow);
+        text-align: center;
+      }
+
+      .prescription-icon {
+        font-size: 5rem;
+        color: var(--primary);
+        margin-bottom: 2rem;
+      }
+
+      .prescription-box h3 {
+        font-size: 2.4rem;
+        color: var(--dark);
+        margin-bottom: 1.5rem;
+      }
+
+      .prescription-box p {
+        font-size: 1.6rem;
+        color: var(--gray);
+        margin-bottom: 3rem;
+        line-height: 1.8;
+      }
+
+      .upload-area {
+        border: 2px dashed var(--primary);
+        border-radius: 8px;
+        padding: 3rem;
+        margin-bottom: 2rem;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .upload-area:hover {
+        background: rgba(46, 125, 50, 0.05);
+      }
+
+      .upload-area i {
+        font-size: 4rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+      }
+
+      .upload-area p {
+        font-size: 1.6rem;
+        color: var(--dark);
+        margin-bottom: 0;
+      }
+
+      .upload-area span {
+        font-size: 1.4rem;
+        color: var(--gray);
+      }
+
+      /* Recherche avancée */
+      .search-section {
+        padding: 5rem 9%;
+        background: var(--white);
+      }
+
+      .advanced-search {
+        max-width: 80rem;
+        margin: 0 auto;
+      }
+
+      .search-box {
+        position: relative;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 1.5rem 2rem 1.5rem 5rem;
+        font-size: 1.8rem;
+        border: 2px solid var(--primary-light);
+        border-radius: 50px;
+        background: var(--light);
+      }
+
+      .search-box i {
+        position: absolute;
+        left: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2rem;
+        color: var(--primary);
+      }
+
+      .search-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+        max-height: 30rem;
+        overflow-y: auto;
+        display: none;
+        z-index: 10;
+      }
+
+      .search-suggestions.active {
+        display: block;
+      }
+
+      .suggestion-item {
+        padding: 1rem 2rem;
+        font-size: 1.6rem;
+        color: var(--dark);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .suggestion-item:hover {
+        background: var(--light);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header (identique) -->
+    <header class="header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-paw"></i>AnimalCare
+      </a>
+
+      <nav class="navbar">
+        <a href="index.html">Accueil</a>
+        <a href="vente.html">Vente</a>
+        <a href="soins.html">Soins</a>
+        <a href="pharmacie.html" class="active">Pharmacie</a>
+        <a href="elevage.html">Élevage</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="icons">
+        <div class="fas fa-bars" id="menu-btn"></div>
+        <div class="fas fa-search" id="search-btn"></div>
+        <div class="fas fa-shopping-cart" id="cart-btn">
+          <span class="cart-count">0</span>
+        </div>
+        <div class="fas fa-user" id="login-btn"></div>
+      </div>
+
+      <!-- Formulaires (identique) -->
+    </header>
+
+    <!-- Header Pharmacie -->
+    <section class="pharmacy-header">
+      <h1>Pharmacie <span style="color: var(--accent)">Vétérinaire</span></h1>
+      <p>
+        Tous les médicaments et produits de soin pour vos animaux. Livraison
+        rapide et conseils professionnels.
+      </p>
+
+      <div style="margin-top: 3rem">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input
+            type="text"
+            id="pharmacy-search"
+            placeholder="Rechercher un médicament, vaccin, produit..."
+          />
+          <div class="search-suggestions" id="search-suggestions"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catégories -->
+    <section class="categories-section">
+      <h2 class="heading">Nos <span>Catégories</span></h2>
+
+      <div class="category-filter" id="category-filter">
+        <button class="category-btn active" data-category="all">
+          Tous les produits
+        </button>
+        <button class="category-btn" data-category="vaccins">Vaccins</button>
+        <button class="category-btn" data-category="vermifuges">
+          Vermifuges
+        </button>
+        <button class="category-btn" data-category="antibiotiques">
+          Antibiotiques
+        </button>
+        <button class="category-btn" data-category="vitamines">
+          Vitamines & Compléments
+        </button>
+        <button class="category-btn" data-category="antiparasitaires">
+          Antiparasitaires
+        </button>
+        <button class="category-btn" data-category="alimentation">
+          Alimentation Spéciale
+        </button>
+        <button class="category-btn" data-category="soins">
+          Produits de Soin
+        </button>
+      </div>
+    </section>
+
+    <!-- Produits -->
+    <section class="products-section">
+      <div class="products-grid" id="products-grid">
+        <!-- Les produits seront chargés dynamiquement -->
+      </div>
+    </section>
+
+    <!-- Upload de prescription -->
+    <section class="prescription-section">
+      <div class="prescription-box">
+        <div class="prescription-icon">
+          <i class="fas fa-file-prescription"></i>
+        </div>
+        <h3>Médicaments sur ordonnance</h3>
+        <p>
+          Pour les médicaments nécessitant une prescription vétérinaire,
+          téléchargez votre ordonnance. Notre vétérinaire la validera sous 24h.
+        </p>
+
+        <div class="upload-area" id="upload-area">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Déposez votre ordonnance ici</p>
+          <span>ou cliquez pour parcourir</span>
+          <input
+            type="file"
+            id="prescription-file"
+            accept=".pdf,.jpg,.jpeg,.png"
+            style="display: none"
+          />
+        </div>
+
+        <button class="btn" id="upload-btn" style="display: none">
+          <i class="fas fa-upload"></i> Envoyer l'ordonnance
+        </button>
+      </div>
+    </section>
+
+    <!-- Panier flottant -->
+    <div class="cart-summary" id="floating-cart">
+      <div class="cart-icon">
+        <i class="fas fa-shopping-cart" style="font-size: 2.5rem"></i>
+        <span class="cart-count">0</span>
+      </div>
+      <div class="cart-total">0 CFA</div>
+      <div class="cart-arrow">
+        <i class="fas fa-chevron-right" style="font-size: 1.8rem"></i>
+      </div>
+    </div>
+
+    <!-- Footer (identique) -->
+    <footer class="footer">
+      <!-- Identique aux autres pages -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script>
+      // Données des produits
+      const products = [
+        // Vaccins
+        {
+          id: 101,
+          name: "Vaccin CHPPi-LR",
+          category: "vaccins",
+          price: 15000,
+          stock: 25,
+          description: "Vaccin combiné pour chiens contre 6 maladies",
+          image: "images/vaccin1.jpg",
+          requiresPrescription: true,
+        },
+        {
+          id: 102,
+          name: "Vaccin Felocell 3",
+          category: "vaccins",
+          price: 12000,
+          stock: 18,
+          description: "Vaccin pour chats contre le coryza et le typhus",
+          image: "images/vaccin2.jpg",
+          requiresPrescription: true,
+        },
+        {
+          id: 103,
+          name: "Vaccin Nobivac",
+          category: "vaccins",
+          price: 18000,
+          stock: 12,
+          description: "Vaccin contre la rage pour chiens et chats",
+          image: "images/vaccin3.jpg",
+          requiresPrescription: true,
+        },
+
+        // Vermifuges
+        {
+          id: 201,
+          name: "Drontal Plus",
+          category: "vermifuges",
+          price: 8000,
+          stock: 30,
+          description: "Vermifuge pour chiens - Comprimés",
+          image: "images/vermifuge1.jpg",
+          requiresPrescription: false,
+        },
+        {
+          id: 202,
+          name: "Milbemax",
+          category: "vermifuges",
+          price: 7500,
+          stock: 22,
+          description: "Vermifuge pour chats et chiots",
+          image: "images/vermifuge2.jpg",
+          requiresPrescription: false,
+        },
+        {
+          id: 203,
+          name: "Panacur",
+          category: "vermifuges",
+          price: 6500,
+          stock: 15,
+          description: "Vermifuge pâte pour chiens et chats",
+          image: "images/vermifuge3.jpg",
+          requiresPrescription: false,
+        },
+
+        // Antibiotiques
+        {
+          id: 301,
+          name: "Amoxicilline 500mg",
+          category: "antibiotiques",
+          price: 12000,
+          stock: 20,
+          description: "Antibiotique à large spectre",
+          image: "images/antibio1.jpg",
+          requiresPrescription: true,
+        },
+        {
+          id: 302,
+          name: "Clamoxyl",
+          category: "antibiotiques",
+          price: 15000,
+          stock: 8,
+          description: "Antibiotique pour infections respiratoires",
+          image: "images/antibio2.jpg",
+          requiresPrescription: true,
+        },
+
+        // Vitamines
+        {
+          id: 401,
+          name: "Vitamines A-Z",
+          category: "vitamines",
+          price: 9500,
+          stock: 40,
+          description: "Complexe vitaminé pour animaux",
+          image: "images/vitamine1.jpg",
+          requiresPrescription: false,
+        },
+        {
+          id: 402,
+          name: "Calcium Plus",
+          category: "vitamines",
+          price: 11000,
+          stock: 25,
+          description: "Complément calcique pour os et dents",
+          image: "images/vitamine2.jpg",
+          requiresPrescription: false,
+        },
+        {
+          id: 403,
+          name: "Omega 3-6-9",
+          category: "vitamines",
+          price: 13000,
+          stock: 18,
+          description: "Acides gras essentiels pour poil brillant",
+          image: "images/vitamine3.jpg",
+          requiresPrescription: false,
+        },
+
+        // Antiparasitaires
+        {
+          id: 501,
+          name: "Frontline Plus",
+          category: "antiparasitaires",
+          price: 8500,
+          stock: 35,
+          description: "Anti-puces et tiques pour chiens",
+          image: "images/antiparasitaire1.jpg",
+          requiresPrescription: false,
+        },
+        {
+          id: 502,
+          name: "Advocate",
+          category: "antiparasitaires",
+          price: 9500,
+          stock: 28,
+          description: "Traitement contre vers et parasites",
+          image: "images/antiparasitaire2.jpg",
+          requiresPrescription: false,
+        },
+        {
+          id: 503,
+          name: "Seresto",
+          category: "antiparasitaires",
+          price: 22000,
+          stock: 14,
+          description: "Collier anti-parasites 8 mois",
+          image: "images/antiparasitaire3.jpg",
+          requiresPrescription: false,
+        },
+
+        // Alimentation
+        {
+          id: 601,
+          name: "Croquelette Renal",
+          category: "alimentation",
+          price: 25000,
+          stock: 12,
+          description: "Aliment pour insuffisance rénale",
+          image: "images/aliment1.jpg",
+          requiresPrescription: true,
+        },
+        {
+          id: 602,
+          name: "Pâtée Diabetic",
+          category: "alimentation",
+          price: 18000,
+          stock: 8,
+          description: "Aliment pour animaux diabétiques",
+          image: "images/aliment2.jpg",
+          requiresPrescription: true,
+        },
+
+        // Soins
+        {
+          id: 701,
+          name: "Shampooing Médical",
+          category: "soins",
+          price: 7500,
+          stock: 45,
+          description: "Shampooing anti-démangeaisons",
+          image: "images/soin1.jpg",
+          requiresPrescription: false,
+        },
+        {
+          id: 702,
+          name: "Pommade Cicatrisante",
+          category: "soins",
+          price: 6500,
+          stock: 30,
+          description: "Pommade pour plaies et blessures",
+          image: "images/soin2.jpg",
+          requiresPrescription: false,
+        },
+        {
+          id: 703,
+          name: "Solution Auriculaire",
+          category: "soins",
+          price: 5500,
+          stock: 25,
+          description: "Nettoyant pour les oreilles",
+          image: "images/soin3.jpg",
+          requiresPrescription: false,
+        },
+      ];
+
+      // Variables
+      let currentCategory = "all";
+      let currentSearch = "";
+      let cart = JSON.parse(localStorage.getItem("pharmacyCart")) || [];
+
+      // Initialisation
+      document.addEventListener("DOMContentLoaded", function () {
+        displayProducts();
+        setupEventListeners();
+        updateCartSummary();
+
+        // Mettre à jour l'année du copyright
+        document.getElementById("current-year").textContent =
+          new Date().getFullYear();
+      });
+
+      // Afficher les produits
+      function displayProducts() {
+        const productsGrid = document.getElementById("products-grid");
+        productsGrid.innerHTML = "";
+
+        // Filtrer les produits
+        let filteredProducts = products;
+
+        if (currentCategory !== "all") {
+          filteredProducts = filteredProducts.filter(
+            (product) => product.category === currentCategory
+          );
+        }
+
+        if (currentSearch) {
+          const searchTerm = currentSearch.toLowerCase();
+          filteredProducts = filteredProducts.filter(
+            (product) =>
+              product.name.toLowerCase().includes(searchTerm) ||
+              product.description.toLowerCase().includes(searchTerm)
+          );
+        }
+
+        // Afficher les produits filtrés
+        filteredProducts.forEach((product) => {
+          const productCard = document.createElement("div");
+          productCard.className = "product-card";
+          productCard.innerHTML = `
+                    ${
+                      product.requiresPrescription
+                        ? '<div class="product-badge">Ordonnance</div>'
+                        : ""
+                    }
+                    
+                    <img src="${product.image}" alt="${
+            product.name
+          }" class="product-image">
+                    
+                    <div class="product-info">
+                        <div class="product-category">${getCategoryLabel(
+                          product.category
+                        )}</div>
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${
+                          product.description
+                        }</p>
+                        
+                        <div class="product-details">
+                            <div class="product-price">${product.price.toLocaleString()} CFA</div>
+                            <div class="product-stock ${
+                              product.stock > 10 ? "in-stock" : "low-stock"
+                            }">
+                                ${
+                                  product.stock > 10
+                                    ? "En stock"
+                                    : "Stock limité"
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="product-actions">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus" data-id="${
+                                  product.id
+                                }">-</button>
+                                <input type="text" class="quantity-input" value="1" data-id="${
+                                  product.id
+                                }" readonly>
+                                <button class="quantity-btn plus" data-id="${
+                                  product.id
+                                }">+</button>
+                            </div>
+                            <button class="btn add-to-cart-btn" data-id="${
+                              product.id
+                            }">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                `;
+          productsGrid.appendChild(productCard);
+        });
+
+        // Ajouter les événements
+        setupProductEvents();
+      }
+
+      // Configurer les événements
+      function setupEventListeners() {
+        // Filtres par catégorie
+        document.querySelectorAll(".category-btn").forEach((button) => {
+          button.addEventListener("click", function () {
+            // Désactiver tous les boutons
+            document.querySelectorAll(".category-btn").forEach((btn) => {
+              btn.classList.remove("active");
+            });
+
+            // Activer le bouton cliqué
+            this.classList.add("active");
+
+            // Mettre à jour la catégorie
+            currentCategory = this.dataset.category;
+            displayProducts();
+          });
+        });
+
+        // Recherche
+        const searchInput = document.getElementById("pharmacy-search");
+        const suggestions = document.getElementById("search-suggestions");
+
+        searchInput.addEventListener("input", function () {
+          currentSearch = this.value;
+
+          if (currentSearch.length >= 2) {
+            showSuggestions(currentSearch);
+          } else {
+            suggestions.classList.remove("active");
+          }
+
+          displayProducts();
+        });
+
+        // Upload de prescription
+        const uploadArea = document.getElementById("upload-area");
+        const fileInput = document.getElementById("prescription-file");
+        const uploadBtn = document.getElementById("upload-btn");
+
+        uploadArea.addEventListener("click", function () {
+          fileInput.click();
+        });
+
+        fileInput.addEventListener("change", function () {
+          if (this.files.length > 0) {
+            const fileName = this.files[0].name;
+            uploadArea.innerHTML = `
+                        <i class="fas fa-file-medical"></i>
+                        <p>${fileName}</p>
+                        <span>Prêt à être envoyé</span>
+                    `;
+            uploadBtn.style.display = "inline-block";
+          }
+        });
+
+        uploadBtn.addEventListener("click", function () {
+          if (fileInput.files.length > 0) {
+            uploadPrescription(fileInput.files[0]);
+          }
+        });
+
+        // Panier flottant
+        const floatingCart = document.getElementById("floating-cart");
+        floatingCart.addEventListener("click", function () {
+          document.querySelector("#cart-btn").click();
+        });
+      }
+
+      // Configurer les événements des produits
+      function setupProductEvents() {
+        // Boutons quantité
+        document.querySelectorAll(".quantity-btn").forEach((button) => {
+          button.addEventListener("click", function () {
+            const productId = parseInt(this.dataset.id);
+            const input = document.querySelector(
+              `.quantity-input[data-id="${productId}"]`
+            );
+            let quantity = parseInt(input.value);
+
+            if (this.classList.contains("plus")) {
+              quantity++;
+            } else if (this.classList.contains("minus") && quantity > 1) {
+              quantity--;
+            }
+
+            input.value = quantity;
+          });
+        });
+
+        // Boutons ajouter au panier
+        document.querySelectorAll(".add-to-cart-btn").forEach((button) => {
+          button.addEventListener("click", function () {
+            const productId = parseInt(this.dataset.id);
+            const input = document.querySelector(
+              `.quantity-input[data-id="${productId}"]`
+            );
+            const quantity = parseInt(input.value);
+
+            addToCart(productId, quantity);
+          });
+        });
+      }
+
+      // Ajouter au panier
+      function addToCart(productId, quantity) {
+        const product = products.find((p) => p.id === productId);
+
+        if (!product) return;
+
+        // Vérifier si besoin d'ordonnance
+        if (product.requiresPrescription && !hasValidPrescription()) {
+          if (
+            confirm(
+              "Ce produit nécessite une ordonnance. Voulez-vous continuer ?"
+            )
+          ) {
+            // Rediriger vers l'upload d'ordonnance
+            document
+              .getElementById("upload-area")
+              .scrollIntoView({ behavior: "smooth" });
+            return;
+          }
+        }
+
+        // Ajouter au panier
+        const existingItem = cart.find((item) => item.id === productId);
+
+        if (existingItem) {
+          existingItem.quantity += quantity;
+        } else {
+          cart.push({
+            ...product,
+            quantity: quantity,
+          });
+        }
+
+        // Sauvegarder
+        localStorage.setItem("pharmacyCart", JSON.stringify(cart));
+
+        // Mettre à jour l'affichage
+        updateCartSummary();
+
+        // Afficher une notification
+        showNotification(`${quantity} × ${product.name} ajouté au panier!`);
+
+        // Réinitialiser la quantité
+        const input = document.querySelector(
+          `.quantity-input[data-id="${productId}"]`
+        );
+        if (input) input.value = 1;
+      }
+
+      // Vérifier si une ordonnance valide existe
+      function hasValidPrescription() {
+        const prescriptions =
+          JSON.parse(localStorage.getItem("prescriptions")) || [];
+        const validPrescription = prescriptions.find(
+          (p) => new Date(p.expiryDate) > new Date()
+        );
+        return !!validPrescription;
+      }
+
+      // Uploader une prescription
+      function uploadPrescription(file) {
+        // Simuler l'upload
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          // Sauvegarder la prescription
+          const prescriptions =
+            JSON.parse(localStorage.getItem("prescriptions")) || [];
+          prescriptions.push({
+            id: Date.now(),
+            fileName: file.name,
+            fileType: file.type,
+            fileSize: file.size,
+            uploadDate: new Date().toISOString(),
+            expiryDate: new Date(
+              Date.now() + 30 * 24 * 60 * 60 * 1000
+            ).toISOString(), // 30 jours
+            status: "pending",
+          });
+
+          localStorage.setItem("prescriptions", JSON.stringify(prescriptions));
+
+          // Afficher un message
+          showNotification("Ordonnance envoyée ! Elle sera validée sous 24h.");
+
+          // Réinitialiser
+          document.getElementById("prescription-file").value = "";
+          document.getElementById("upload-btn").style.display = "none";
+          document.getElementById("upload-area").innerHTML = `
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Déposez votre ordonnance ici</p>
+                    <span>ou cliquez pour parcourir</span>
+                `;
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      // Mettre à jour le résumé du panier
+      function updateCartSummary() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const totalAmount = cart.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        );
+
+        // Mettre à jour le panier flottant
+        const floatingCart = document.getElementById("floating-cart");
+        if (floatingCart) {
+          floatingCart.querySelector(".cart-count").textContent = totalItems;
+          floatingCart.querySelector(".cart-total").textContent =
+            totalAmount.toLocaleString() + " CFA";
+
+          // Afficher/masquer
+          if (totalItems > 0) {
+            floatingCart.style.display = "flex";
+          } else {
+            floatingCart.style.display = "none";
+          }
+        }
+
+        // Mettre à jour le compteur du header
+        const headerCartCount = document.querySelector(".cart-count");
+        if (headerCartCount) {
+          headerCartCount.textContent = totalItems;
+        }
+      }
+
+      // Afficher les suggestions de recherche
+      function showSuggestions(searchTerm) {
+        const suggestions = document.getElementById("search-suggestions");
+        suggestions.innerHTML = "";
+
+        // Trouver les produits correspondants
+        const matchingProducts = products
+          .filter((product) =>
+            product.name.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .slice(0, 5); // Limiter à 5 suggestions
+
+        // Ajouter les suggestions
+        matchingProducts.forEach((product) => {
+          const suggestion = document.createElement("div");
+          suggestion.className = "suggestion-item";
+          suggestion.textContent = product.name;
+          suggestion.addEventListener("click", function () {
+            document.getElementById("pharmacy-search").value = product.name;
+            currentSearch = product.name;
+            suggestions.classList.remove("active");
+            displayProducts();
+          });
+          suggestions.appendChild(suggestion);
+        });
+
+        suggestions.classList.add("active");
+      }
+
+      // Fermer les suggestions en cliquant ailleurs
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest(".search-box")) {
+          document
+            .getElementById("search-suggestions")
+            .classList.remove("active");
+        }
+      });
+
+      // Fonctions utilitaires
+      function getCategoryLabel(category) {
+        const labels = {
+          vaccins: "Vaccins",
+          vermifuges: "Vermifuges",
+          antibiotiques: "Antibiotiques",
+          vitamines: "Vitamines",
+          antiparasitaires: "Antiparasitaires",
+          alimentation: "Alimentation",
+          soins: "Produits de Soin",
+        };
+        return labels[category] || category;
+      }
+
+      function showNotification(message) {
+        // Créer la notification
+        const notification = document.createElement("div");
+        notification.className = "notification success";
+        notification.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
+            `;
+
+        // Ajouter au body
+        document.body.appendChild(notification);
+
+        // Animation
+        setTimeout(() => {
+          notification.classList.add("show");
+        }, 10);
+
+        // Supprimer après 3 secondes
+        setTimeout(() => {
+          notification.classList.remove("show");
+          setTimeout(() => {
+            notification.remove();
+          }, 300);
+        }, 3000);
+      }
+
+      // Styles pour les notifications
+      const style = document.createElement("style");
+      style.textContent = `
+            .notification {
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--primary);
+                color: white;
+                padding: 1.5rem 2rem;
+                border-radius: var(--radius);
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                box-shadow: var(--shadow);
+                z-index: 10000;
+                transform: translateX(100%);
+                opacity: 0;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+            
+            .notification.show {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            
+            .notification i {
+                font-size: 2rem;
+            }
+            
+            .notification span {
+                font-size: 1.6rem;
+            }
+        `;
+      document.head.appendChild(style);
+    </script>
+  </body>
+</html>
